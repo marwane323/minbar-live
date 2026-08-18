@@ -1,0 +1,105 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 95%;
+    --card: 240 6% 7%;
+    --card-foreground: 0 0% 95%;
+    --popover: 240 6% 7%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 43 96% 56%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 240 4% 16%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 240 4% 16%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 160 84% 39%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 43 96% 56%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Custom scrollbar for dark theme */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(240 6% 7%);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(240 3.7% 25%);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(240 3.7% 35%);
+  }
+}
+
+@layer utilities {
+  .font-arabic {
+    font-family: var(--font-arabic), serif;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Quran verse styling */
+  .quran-verse {
+    @apply font-arabic text-lg leading-loose;
+    @apply border-l-2 border-amber-500/50 pl-4 py-2;
+    @apply bg-amber-500/5 rounded-r-lg;
+    direction: rtl;
+  }
+
+  /* Hadith text styling */
+  .hadith-text {
+    @apply font-arabic text-base leading-relaxed;
+    @apply border-l-2 border-emerald-500/50 pl-4 py-2;
+    @apply bg-emerald-500/5 rounded-r-lg;
+    direction: rtl;
+  }
+
+  /* Status dot animation */
+  .status-dot-live {
+    @apply w-2 h-2 rounded-full bg-emerald-500;
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  /* RTL container */
+  .rtl-container {
+    direction: rtl;
+    text-align: right;
+  }
+
+  /* LTR container (explicit) */
+  .ltr-container {
+    direction: ltr;
+    text-align: left;
+  }
+}

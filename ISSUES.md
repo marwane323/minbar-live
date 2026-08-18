@@ -10,7 +10,11 @@
 
 ## Open Issues
 
-*No open issues yet. Issues will be logged here as development progresses.*
+### ISSUE-001: Sprint 4 Build Verification Pending (P1)
+**Date:** 2026-08-18  
+**Status:** Open  
+**Description:** All Sprint 4 frontend code (66+ files across 4 portals) was written by parallel subagents. First `npm run build` failed on missing `@/components/ui/slider` — component was created but rebuild was interrupted before verification. Next session must run `npm run build` and fix any remaining TypeScript errors.  
+**Resolution:** Run `npm run build` in `src/frontend/`, fix errors, mark as closed.
 
 ---
 
@@ -64,11 +68,41 @@
 **Consequences:** GDPR-compliant. Adds UI friction for voice setup. Worth it for legal safety.  
 **Alternatives considered:** Implicit consent (illegal in EU), no voice cloning feature (loses key differentiator).
 
+### ADR-007: Docker Internal Port Strategy
+**Date:** 2026-07-20  
+**Status:** Accepted  
+**Context:** Backend services' Dockerfiles each use their architecture-defined port (8001–8007) internally. Docker-compose maps external ports to internal ports.  
+**Decision:** Each service listens on its own unique port inside the container (matching ARCHITECTURE.md). Docker-compose maps `external:internal` with matching ports. Health checks target the actual internal port.  
+**Consequences:** Consistent with ARCHITECTURE.md port table. Requires port mapping alignment between Dockerfile CMD and docker-compose.  
+**Alternatives considered:** All services listen on port 8000 internally (simpler Dockerfiles, but loses traceability to architecture doc).
+
+### ADR-008: Tenant ID SQL Injection Prevention
+**Date:** 2026-07-20  
+**Status:** Accepted  
+**Context:** `set_tenant_context()` uses PostgreSQL `SET app.tenant_id` which does not support parameterized queries. Original implementation used f-string interpolation — a SQL injection vector.  
+**Decision:** Validate `tenant_id` as a UUID before interpolation. `uuid.UUID()` parsing guarantees only hex+hyphens pass, making injection impossible.  
+**Consequences:** Extra validation step on every request (negligible cost). Raises `ValueError` on invalid tenant_id format.  
+**Alternatives considered:** Using a PL/pgSQL function with parameters (added DB dependency), using `quote_literal()` (PostgreSQL-specific, less portable).
+
 ---
 
 ## Closed Issues
 
 *None yet.*
+
+---
+
+### ADR-009: Replace passlib with direct bcrypt
+- **Date:** 2026-07-20
+- **Decision:** Removed `passlib[bcrypt]` dependency. Using `bcrypt` directly for `hashpw/checkpw`.
+- **Rationale:** passlib is unmaintained. bcrypt >4.1 enforces strict 72-byte limit; passlib's internal 255-char test string triggers `ValueError`. Direct bcrypt is simpler and reliable.
+- **Impact:** `shared/auth.py` — `verify_password()` and `get_password_hash()` now use `bcrypt` directly.
+
+### ADR-010: Pydantic Settings extra="ignore"
+- **Date:** 2026-07-27
+- **Decision:** Set `extra="ignore"` on the `Settings` model_config.
+- **Rationale:** `.env` contains variables for multiple services (POSTGRES_USER, NEXTAUTH_SECRET, MINIO_ROOT_USER, etc.). Without `extra="ignore"`, any service importing shared config would fail with pydantic `extra_forbidden` errors for env vars not in its model.
+- **Impact:** `shared/config.py` — all services now tolerant of extra env vars.
 
 ---
 
@@ -79,3 +113,5 @@
 | TD-001 | PostgreSQL full-text search → migrate to Meilisearch for session history | Medium | P3 |
 | TD-002 | Evaluate AraVec embeddings for improved Quran semantic search vs. rapidfuzz | Medium | P2 |
 | TD-003 | Implement audio chunking strategy for dialects other than MSA in ASR | High | P1 |
+| TD-004 | WebSocket hub tests hang — need async test client compatible with starlette WS | Low | P3 |
+

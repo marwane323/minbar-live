@@ -1,0 +1,12 @@
+[
+    {"surah_number": 1, "name_ar": "الفاتحة", "name_en": "Al-Fatihah"},
+    {"surah_number": 2, "name_ar": "البقرة", "name_en": "Al-Baqarah"},
+    {"surah_number": 3, "name_ar": "آل عمران", "name_en": "Aal-E-Imran"},
+    {"surah_number": 4, "name_ar": "النساء", "name_en": "An-Nisa'"},
+    {"surah_number": 5, "name_ar": "المائدة", "name_en": "Al-Ma'idah"},
+    {"surah_number": 6, "name_ar": "الأنعام", "name_en": "Al-An'am"},
+    {"surah_number": 7, "name_ar": "الأعراف", "name_en": "Al-A'raf"},
+    {"surah_number": 8, "name_ar": "الأنفال", "name_en": "Al-Anfal"},
+    {"surah_number": 9, "name_ar": "التوبة", "name_en": "At-Tawbah"},
+    {"surah_number": 10, "name_ar": "يونس", "name_en": "Yunus"}
+]

@@ -1,0 +1,92 @@
+# 🤖 Antigravity Multi-Agent Config — Minbar Live
+
+## orchestrator_agent
+model: gemini-2.5-pro  # or claude-sonnet-4-5 — both supported
+context_files:
+  - CLAUDE.md          # Always loaded first
+  - main_prompt.md     # Master task definitions
+  - AGENT_HARNESS.md   # Behavioral rules
+  - ARCHITECTURE.md    # System design
+  - MODELS.md          # AI model choices
+  - SKILLS.md          # External repos to use
+  - PROGRESS.md        # Sprint state (read before each task)
+  - ISSUES.md          # Existing decisions and issues
+
+## sub_agent_defaults
+branch_prefix: feature/agent-
+commit_style: conventional
+always_update_files:
+  - PROGRESS.md        # Mark task done after completion
+  - ISSUES.md          # Log any decisions or issues found
+
+## execution_order
+# Sequential unless marked [PARALLEL]
+agents:
+  - id: 1
+    name: "Project Scaffold & Repository Structure"
+    branch: feature/agent-1-scaffold
+    sprint: 1
+  - id: 2
+    name: "Database Schema & Migrations"
+    branch: feature/agent-2-database
+    sprint: 1
+  - id: 3
+    name: "Authentication & Multi-Tenancy"
+    branch: feature/agent-3-auth
+    sprint: 1
+  - id: 4
+    name: "ASR Pipeline"
+    branch: feature/agent-4-asr
+    sprint: 2
+  - id: 5
+    name: "Alignment Engine"
+    branch: feature/agent-5-alignment
+    sprint: 2
+  - id: 6
+    name: "LLM Translation Service"
+    branch: feature/agent-6-translation
+    sprint: 2
+  - id: 7
+    name: "Quran & Hadith Detection"
+    branch: feature/agent-7-quran-hadith
+    sprint: 2
+  - id: 8
+    name: "Voice Cloning & TTS"
+    branch: feature/agent-8-tts
+    sprint: 3
+  - id: 9
+    name: "WebSocket Broadcast Layer"
+    branch: feature/agent-9-websocket
+    sprint: 3
+  - id: 10  # [PARALLEL with 11, 12, 13 after agent-9]
+    name: "Imam Preparation Frontend"
+    branch: feature/agent-10-imam-portal
+    sprint: 4
+  - id: 11  # [PARALLEL]
+    name: "Live Operator Frontend"
+    branch: feature/agent-11-operator-portal
+    sprint: 4
+  - id: 12  # [PARALLEL]
+    name: "Listener PWA"
+    branch: feature/agent-12-listener-pwa
+    sprint: 4
+  - id: 13  # [PARALLEL]
+    name: "Admin Portal"
+    branch: feature/agent-13-admin-portal
+    sprint: 4
+  - id: 14
+    name: "Video Captions (Async)"
+    branch: feature/agent-14-video-captions
+    sprint: 5
+  - id: 15
+    name: "Security Hardening & Audit"
+    branch: feature/agent-15-security
+    sprint: 5
+  - id: 16
+    name: "CI/CD & Infrastructure"
+    branch: feature/agent-16-cicd
+    sprint: 5
+  - id: 17
+    name: "Documentation & Demo"
+    branch: feature/agent-17-docs
+    sprint: 5

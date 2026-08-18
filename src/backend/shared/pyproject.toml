@@ -1,0 +1,19 @@
+[project]
+name = "shared"
+version = "0.1.0"
+description = "Shared library for Minbar Live backend"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.0",
+    "pydantic-settings>=2.0",
+    "sqlalchemy>=2.0",
+    "sqlalchemy[asyncio]>=2.0",
+    "asyncpg>=0.28",
+    "psycopg2-binary",
+    "alembic",
+    "bcrypt",
+    "pgvector",
+    "pyjwt",
+    "passlib[bcrypt]",
+    "python-multipart"
+]

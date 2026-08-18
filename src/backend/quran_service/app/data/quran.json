@@ -1,0 +1,62 @@
+[
+    {
+        "surah_number": 1,
+        "ayah_number": 1,
+        "text": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+        "translations": {"en": "In the name of Allah, the Entirely Merciful, the Especially Merciful."}
+    },
+    {
+        "surah_number": 1,
+        "ayah_number": 2,
+        "text": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ",
+        "translations": {"en": "[All] praise is [due] to Allah, Lord of the worlds -"}
+    },
+    {
+        "surah_number": 1,
+        "ayah_number": 3,
+        "text": "الرَّحْمَٰنِ الرَّحِيمِ",
+        "translations": {"en": "The Entirely Merciful, the Especially Merciful,"}
+    },
+    {
+        "surah_number": 1,
+        "ayah_number": 4,
+        "text": "مَالِكِ يَوْمِ الدِّينِ",
+        "translations": {"en": "Sovereign of the Day of Recompense."}
+    },
+    {
+        "surah_number": 1,
+        "ayah_number": 5,
+        "text": "إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ",
+        "translations": {"en": "It is You we worship and You we ask for help."}
+    },
+    {
+        "surah_number": 1,
+        "ayah_number": 6,
+        "text": "اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ",
+        "translations": {"en": "Guide us to the straight path -"}
+    },
+    {
+        "surah_number": 1,
+        "ayah_number": 7,
+        "text": "صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ",
+        "translations": {"en": "The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray."}
+    },
+    {
+        "surah_number": 2,
+        "ayah_number": 1,
+        "text": "الم",
+        "translations": {"en": "Alif, Lam, Meem."}
+    },
+    {
+        "surah_number": 2,
+        "ayah_number": 2,
+        "text": "ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِلْمُتَّقِينَ",
+        "translations": {"en": "This is the Book about which there is no doubt, a guidance for those conscious of Allah -"}
+    },
+    {
+        "surah_number": 2,
+        "ayah_number": 255,
+        "text": "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ ۚ لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ ۚ لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ ۗ مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ ۚ يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ ۖ وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ ۚ وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ ۖ وَلَا يَئُودُهُ حِفْظُهُمَا ۚ وَهُوَ الْعَلِيُّ الْعَظِيمُ",
+        "translations": {"en": "Allah - there is no deity except Him, the Ever-Living, the Sustainer of [all] existence. Neither drowsiness overtakes Him nor sleep. To Him belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except by His permission? He knows what is [presently] before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursi extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great."}
+    }
+]

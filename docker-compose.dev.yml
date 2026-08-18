@@ -1,0 +1,273 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-minbar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-minbar_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-minbar_live}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U minbar -d minbar_live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - minbar-network
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - minbar-network
+
+  minio:
+    image: minio/minio:latest
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minbar_minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minbar_minio_secret}
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+      - minbar-network
+
+  minio-setup:
+    image: minio/mc
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set myminio http://minio:9000 $${MINIO_ROOT_USER:-minbar_minio} $${MINIO_ROOT_PASSWORD:-minbar_minio_secret} &&
+      mc mb myminio/$${S3_BUCKET_NAME:-minbar-live} || true
+      "
+    networks:
+      - minbar-network
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: src/backend/api_gateway/Dockerfile
+    ports:
+      - "${API_GATEWAY_PORT:-8000}:8000"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  asr-service:
+    build:
+      context: .
+      dockerfile: src/backend/asr_service/Dockerfile
+    ports:
+      - "${ASR_SERVICE_PORT:-8001}:8001"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  alignment-service:
+    build:
+      context: .
+      dockerfile: src/backend/alignment_service/Dockerfile
+    ports:
+      - "${ALIGNMENT_SERVICE_PORT:-8002}:8002"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  translation-service:
+    build:
+      context: .
+      dockerfile: src/backend/translation_service/Dockerfile
+    ports:
+      - "${TRANSLATION_SERVICE_PORT:-8003}:8003"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8003/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  tts-service:
+    build:
+      context: .
+      dockerfile: src/backend/tts_service/Dockerfile
+    ports:
+      - "${TTS_SERVICE_PORT:-8004}:8004"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8004/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  quran-service:
+    build:
+      context: .
+      dockerfile: src/backend/quran_service/Dockerfile
+    ports:
+      - "${QURAN_SERVICE_PORT:-8005}:8005"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8005/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  websocket-hub:
+    build:
+      context: .
+      dockerfile: src/backend/websocket_hub/Dockerfile
+    ports:
+      - "${WEBSOCKET_HUB_PORT:-8006}:8006"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8006/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  session-manager:
+    build:
+      context: .
+      dockerfile: src/backend/session_manager/Dockerfile
+    ports:
+      - "${SESSION_MANAGER_PORT:-8007}:8007"
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8007/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  worker:
+    build:
+      context: .
+      dockerfile: src/backend/worker/Dockerfile
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+  frontend:
+    build:
+      context: src/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - minbar-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  minio_data:
+
+networks:
+  minbar-network:
+    driver: bridge
